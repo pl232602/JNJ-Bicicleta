@@ -10,7 +10,12 @@ while(cap.isOpened()):
 
     ret, frame = cap.read() 
     if ret == True: 
-        slopes = []
+        slope_left = []
+        slope_right = []
+        x1s = []
+        x2s = []
+        y1s = []
+        y2s = []
         stash = frame
         lower_yellow = np.array([220,220,220])
         upper_yellow = np.array([255,255,255])
@@ -21,7 +26,7 @@ while(cap.isOpened()):
 
         mask = cv2.inRange(frame, lower_yellow, upper_yellow)
         edges = cv2.Canny(mask, 50, 150, apertureSize=3)
-        lines = cv2.HoughLines(edges, 1, np.pi/180, 100)
+        lines = cv2.HoughLines(edges, 1, np.pi/180, 70)
 
         try:
 
@@ -43,8 +48,32 @@ while(cap.isOpened()):
                 x2 = int(x0 - 1000*(-b))
             
                 y2 = int(y0 - 1000*(a))
+
+                average_slope = (x2-x1)/(y2-y1)
+                if abs(average_slope) < 2:
+                    cv2.line(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
+                    x1s.append(x1)
+                    x2s.append(x2)
+                    y1s.append(y1)
+                    y2s.append(y2)
+                    if average_slope > 0:
+                        slope_left.append(average_slope)
+                    elif average_slope < 0:
+                        slope_right.append(average_slope)
+                cv2.line(frame, (100,100), (800,800), (0,0,255),2)
+            try:
+                average_slope_left = sum(slope_left)/len(slope_left)
+            except ZeroDivisionError as nothing:
+                print("left borked")
+
+            try:
+                average_slope_right = sum(slope_right)/len(slope_right)
+            except ZeroDivisionError as nothing:
+                print("right borked")
+
             
-                cv2.line(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
+
+
 
         except TypeError as e:
             pass
