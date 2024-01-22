@@ -4,6 +4,8 @@ import numpy as np
  
 cap = cv2.VideoCapture(r'C:\Users\pl232602\Work Folders\Documents\EDD-Capstone-Project\30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4') 
   
+def avg(input_list):
+    return sum(input_list)/len(input_list)
 
 while(cap.isOpened()): 
       
@@ -16,6 +18,14 @@ while(cap.isOpened()):
         x2s = []
         y1s = []
         y2s = []
+        lx1s = []
+        lx2s = []
+        ly1s = []
+        ly2s = []
+        rx1s = []
+        rx2s = []
+        ry1s = []
+        ry2s = []
         stash = frame
         lower_yellow = np.array([220,220,220])
         upper_yellow = np.array([255,255,255])
@@ -57,19 +67,21 @@ while(cap.isOpened()):
                     y1s.append(y1)
                     y2s.append(y2)
                     if average_slope > 0:
-                        slope_left.append(average_slope)
+                        lx1s.append(x1)
+                        lx2s.append(x2)
+                        ly1s.append(y1)
+                        ly2s.append(y2)
                     elif average_slope < 0:
-                        slope_right.append(average_slope)
+                        rx1s.append(x1)
+                        rx2s.append(x2)
+                        ry1s.append(y1)
+                        ry2s.append(y2)
+                    
+                    alx1s = average_slope(lx1s)
+                    al1x2s = average_slope(lx2s)
+                    aly1s = average_slope()
+                    
                 cv2.line(frame, (100,100), (800,800), (0,0,255),2)
-            try:
-                average_slope_left = sum(slope_left)/len(slope_left)
-            except ZeroDivisionError as nothing:
-                print("left borked")
-
-            try:
-                average_slope_right = sum(slope_right)/len(slope_right)
-            except ZeroDivisionError as nothing:
-                print("right borked")
 
             
 
