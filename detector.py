@@ -6,6 +6,7 @@ cap = cv2.VideoCapture(r'C:\Users\pl232602\Work Folders\Documents\EDD-Capstone-P
   
 def avg(input_list):
     try:
+        print(input_list)
         return sum(input_list)/len(input_list)
     except ZeroDivisionError as error:
         pass
@@ -61,7 +62,6 @@ while(cap.isOpened()):
                 x2 = int(x0 - 1000*(-b))
             
                 y2 = int(y0 - 1000*(a))
-
                 average_slope = (x2-x1)/(y2-y1)
                 if abs(average_slope) < 2:
                     cv2.line(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
@@ -78,6 +78,7 @@ while(cap.isOpened()):
                         alx2s = avg(lx2s)
                         aly1s = avg(ly1s)
                         aly2s = avg(ly2s)
+                        cv2.line(frame, (alx1s,aly1s), (alx2s,aly2s), (0,0,255), 2)
                     elif average_slope < 0:
                         rx1s.append(x1)
                         rx2s.append(x2)
@@ -87,22 +88,15 @@ while(cap.isOpened()):
                         arx2s = avg(rx2s)
                         ary1s = avg(ry1s)
                         ary2s = avg(ry2s)
+                        cv2.line(frame, (arx1s,ary1s), (arx2s,ary2s), (0,0,255), 2)
                     
-                cv2.line(frame, (100,100), (800,800), (0,0,255),2)
 
-            
-
-
+        
 
         except TypeError as e:
             pass
 
-
         result = cv2.bitwise_and(frame,frame, mask= mask)
-
-        
-
-        
 
         cv2.imshow('Frame', frame) 
           
