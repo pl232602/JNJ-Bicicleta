@@ -5,7 +5,10 @@ import numpy as np
 cap = cv2.VideoCapture(r'C:\Users\pl232602\Work Folders\Documents\EDD-Capstone-Project\30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4') 
   
 def avg(input_list):
-    return sum(input_list)/len(input_list)
+    try:
+        return sum(input_list)/len(input_list)
+    except ZeroDivisionError as error:
+        pass
 
 while(cap.isOpened()): 
       
@@ -71,15 +74,19 @@ while(cap.isOpened()):
                         lx2s.append(x2)
                         ly1s.append(y1)
                         ly2s.append(y2)
+                        alx1s = avg(lx1s)
+                        alx2s = avg(lx2s)
+                        aly1s = avg(ly1s)
+                        aly2s = avg(ly2s)
                     elif average_slope < 0:
                         rx1s.append(x1)
                         rx2s.append(x2)
                         ry1s.append(y1)
                         ry2s.append(y2)
-                    
-                    alx1s = average_slope(lx1s)
-                    al1x2s = average_slope(lx2s)
-                    aly1s = average_slope()
+                        arx1s = avg(rx1s)
+                        arx2s = avg(rx2s)
+                        ary1s = avg(ry1s)
+                        ary2s = avg(ry2s)
                     
                 cv2.line(frame, (100,100), (800,800), (0,0,255),2)
 
