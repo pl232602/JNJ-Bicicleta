@@ -5,7 +5,6 @@ cap = cv2.VideoCapture(r'/home/bicicleta/JNJ-Bicicleta/30 minute Fat Burning Ind
 
 def avg(input_list):
     try:
-        print(abs(sum(input_list)/len(input_list)))
         return (sum(input_list)/len(input_list))
     except ZeroDivisionError as error:
         pass
@@ -105,7 +104,10 @@ while True:
             right_distance = abs(w/2 - new_arx2s)
 
 
-
+            if left_distance>right_distance:
+                print("close to left")
+            elif right_distance>left_distance:
+                print("close to right")
 
         except TypeError as e:
             pass
