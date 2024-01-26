@@ -8,7 +8,7 @@ def avg(input_list):
         return (sum(input_list)/len(input_list))
     except ZeroDivisionError as error:
         pass
-
+x=0
 
 while True:
     ret, frame = cap.read()
@@ -115,7 +115,9 @@ while True:
         result = cv2.bitwise_and(frame,frame, mask= mask)
 
         cv2.imshow('Frame', frame)
-        if cv2.waitKey(25) & 0xFF == ord('q'):
+        x = x+1
+        print(x)
+        if (cv2.waitKey(25) & 0xFF == ord('q')) or (x == 700):
             break
 
     else:
