@@ -28,10 +28,11 @@ def reverse(speed):
 
 try:
     while True:
-        forward(50)
+        print("working")
+        forward(100)
         time.sleep(2)
-        reverse(50)
-        time.sleep
+        reverse(100)
+        time.sleep(2)
 
 except KeyboardInterrupt:
     pwm.stop()
