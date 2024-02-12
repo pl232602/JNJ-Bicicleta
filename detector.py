@@ -1,13 +1,19 @@
 import cv2
 import numpy as np
 
-cap = cv2.VideoCapture(r'/home/bicicleta/JNJ-Bicicleta/30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4')
+cap = cv2.VideoCapture(r'C:\Users\pl232602\Work Folders\Documents\EDD-Capstone-Project\30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4')
 
 def avg(input_list):
     try:
         return (sum(input_list)/len(input_list))
     except ZeroDivisionError as error:
         pass
+
+left_counter = 0
+left_lock = False
+right_counter = 0
+right_lock = False
+
 x=0
 
 while True:
@@ -105,9 +111,30 @@ while True:
 
 
             if left_distance>right_distance:
-                print("close to left")
+                left_counter = left_counter + 1
             elif right_distance>left_distance:
-                print("close to right")
+                right_counter = right_counter + 1
+
+            if left_counter > right_counter + 20:
+                left_lock = True
+                right_lock = False
+                print(right_lock)
+                left_counter = 0
+                right_counter = 0
+
+            if right_counter > left_counter + 20:
+                right_lock = True
+                left_lock = False
+                print(left_lock)
+                left_counter = 0
+                right_counter = 0
+
+            if left_lock == True:
+                print("turning_right")
+
+            if right_lock == True:
+                print("turning_left")
+
 
         except TypeError as e:
             pass
@@ -116,7 +143,6 @@ while True:
 
         cv2.imshow('Frame', frame)
         x = x+1
-        print(x)
         if (cv2.waitKey(25) & 0xFF == ord('q')) or (x == 700):
             break
 
