@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from motor import *
+##from motor import *
 
 cap = cv2.VideoCapture(r'C:\Users\Niles\OneDrive\Documents\EDD-Capstone-Project\30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4')
 
@@ -133,16 +133,22 @@ while True:
 
             if left_lock == True:
                 if turned_left == True:
-                    pass
+                    print("compensating right")
+                    turned_left = False
                     
                 if turned_right == False:
                     print("right turn motor call")
-                    turned_right == True
-                
-                print("turning_right")
+                    turned_right = True
+
 
             if right_lock == True:
-                print("turning_left")
+                if turned_right == True:
+                    print("compensating left")
+                    turned_right = False
+                
+                if turned_left == False:
+                    print("left turn motor call")
+                    turned_left = True
 
 
         except TypeError as e:
