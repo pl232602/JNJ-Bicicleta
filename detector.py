@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
+from motor import *
 
-cap = cv2.VideoCapture(r'C:\Users\pl232602\Work Folders\Documents\EDD-Capstone-Project\30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4')
+cap = cv2.VideoCapture(r'C:\Users\Niles\OneDrive\Documents\EDD-Capstone-Project\30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4')
 
 def avg(input_list):
     try:
@@ -13,6 +14,9 @@ left_counter = 0
 left_lock = False
 right_counter = 0
 right_lock = False
+
+turned_right = False
+turned_left = False
 
 x=0
 
@@ -118,18 +122,23 @@ while True:
             if left_counter > right_counter + 20:
                 left_lock = True
                 right_lock = False
-                print(right_lock)
                 left_counter = 0
                 right_counter = 0
 
             if right_counter > left_counter + 20:
                 right_lock = True
                 left_lock = False
-                print(left_lock)
                 left_counter = 0
                 right_counter = 0
 
             if left_lock == True:
+                if turned_left == True:
+                    pass
+                    
+                if turned_right == False:
+                    print("right turn motor call")
+                    turned_right == True
+                
                 print("turning_right")
 
             if right_lock == True:
