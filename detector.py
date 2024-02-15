@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-##from motor import *
+import motor
 
 cap = cv2.VideoCapture(r'C:\Users\Niles\OneDrive\Documents\EDD-Capstone-Project\30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4')
 
@@ -10,6 +10,15 @@ def avg(input_list):
     except ZeroDivisionError as error:
         pass
 
+def denoiser(image):
+    try:
+        kernel = np.ones((3,3), np.uint8)
+        eroded = cv2.erode(image, kernel, iterations = 1)
+        return eroded
+    except:
+        pass
+
+
 left_counter = 0
 left_lock = False
 right_counter = 0
@@ -17,6 +26,8 @@ right_lock = False
 
 turned_right = False
 turned_left = False
+
+delay = 10
 
 x=0
 
@@ -38,13 +49,16 @@ while True:
         ry1s = []
         ry2s = []
         stash = frame
-        lower_yellow = np.array([210,210,210])
-        upper_yellow = np.array([255,255,255])
+        lower_white = np.array([230,230,230])
+        upper_white = np.array([255,255,255])
 
         h, w, l = frame.shape
 
 
-        mask = cv2.inRange(frame, lower_yellow, upper_yellow)
+        mask = cv2.inRange(frame, lower_white, upper_white)
+
+        mask = denoiser(mask)
+
         edges = cv2.Canny(mask, 50, 150, apertureSize=3)
         lines = cv2.HoughLines(edges, 1, np.pi/180, 70)
 
@@ -119,13 +133,13 @@ while True:
             elif right_distance>left_distance:
                 right_counter = right_counter + 1
 
-            if left_counter > right_counter + 20:
+            if left_counter > right_counter + delay:
                 left_lock = True
                 right_lock = False
                 left_counter = 0
                 right_counter = 0
 
-            if right_counter > left_counter + 20:
+            if right_counter > left_counter + delay:
                 right_lock = True
                 left_lock = False
                 left_counter = 0
@@ -134,31 +148,35 @@ while True:
             if left_lock == True:
                 if turned_left == True:
                     print("compensating right")
+                    motor.right(60)
                     turned_left = False
                     
                 if turned_right == False:
                     print("right turn motor call")
+                    motor.right(60)
                     turned_right = True
-
 
             if right_lock == True:
                 if turned_right == True:
                     print("compensating left")
+                    motor.left(60)
                     turned_right = False
                 
                 if turned_left == False:
                     print("left turn motor call")
+                    motor.left(60)
                     turned_left = True
 
 
         except TypeError as e:
             pass
 
-        result = cv2.bitwise_and(frame,frame, mask= mask)
-
-        cv2.imshow('Frame', frame)
+        try:
+            cv2.imshow('Frame', frame)
+        except:
+            pass
         x = x+1
-        if (cv2.waitKey(25) & 0xFF == ord('q')) or (x == 700):
+        if (cv2.waitKey(25) & 0xFF == ord('q')) or (x == 9000):
             break
 
     else:
