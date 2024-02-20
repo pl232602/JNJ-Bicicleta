@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
-import motor
+import motor_test as motor
 
-cap = cv2.VideoCapture(r'C:\Users\Niles\OneDrive\Documents\EDD-Capstone-Project\30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4')
+cap = cv2.VideoCapture(r'/home/nilesosa/Documents/JNJ-Bicicleta/30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4')
 
 def avg(input_list):
     try:
@@ -56,7 +56,6 @@ while True:
 
 
         mask = cv2.inRange(frame, lower_white, upper_white)
-
         mask = denoiser(mask)
 
         edges = cv2.Canny(mask, 50, 150, apertureSize=3)
@@ -172,7 +171,7 @@ while True:
             pass
 
         try:
-            cv2.imshow('Frame', frame)
+            cv2.imshow('Frame', edges)
         except:
             pass
         x = x+1
