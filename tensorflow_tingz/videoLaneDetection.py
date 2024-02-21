@@ -1,17 +1,13 @@
 import cv2
-import pafy
 from ultrafastLaneDetector import UltrafastLaneDetector, ModelType
 
-model_path = "models/model_float32.tflite"
+model_path = "/home/nilesosa/Documents/JNJ-Bicicleta/tensorflow_tingz/models/model_float32.tflite"
 model_type = ModelType.TUSIMPLE
 
 # Initialize video
 # cap = cv2.VideoCapture("video.mp4")
 
-videoUrl = 'https://youtu.be/2CIxM7x-Clc'
-videoPafy = pafy.new(videoUrl)
-print(videoPafy.streams)
-cap = cv2.VideoCapture(videoPafy.streams[-1].url)
+cap = cv2.VideoCapture("/home/nilesosa/Documents/JNJ-Bicicleta/30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4")
 
 # Initialize lane detection model
 lane_detector = UltrafastLaneDetector(model_path, model_type)
@@ -24,11 +20,15 @@ while cap.isOpened():
 		ret, frame = cap.read()
 	except:
 		continue
+		continue
 
 	if ret:	
 
+		height, width, _ = frame.shape
+		cropped_frame = frame[int(height / 2.5):, :]
+
 		# Detect the lanes
-		output_img = lane_detector.detect_lanes(frame)
+		output_img = lane_detector.detect_lanes(cropped_frame)
 
 		cv2.imshow("Detected lanes", output_img)
 

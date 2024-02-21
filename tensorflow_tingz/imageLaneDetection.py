@@ -1,11 +1,11 @@
 import cv2
 from ultrafastLaneDetector import UltrafastLaneDetector, ModelType
 
-model_path = r"C:\Users\Niles\OneDrive\Documents\JNJ-Bicicleta\tensorflow_tingz\models\model_float32.tflite"
+model_path = r"/home/nilesosa/Documents/JNJ-Bicicleta/tensorflow_tingz/models/model_float32.tflite"
 model_type = ModelType.TUSIMPLE
 
 
-image_path = r"C:\Users\Niles\OneDrive\Documents\JNJ-Bicicleta\tensorflow_tingz\input.jpg"
+image_path = r"/home/nilesosa/Downloads/Lane-Segmentation-master/data/istockphoto-843184110-612x612.jpg"
 
 # Initialize lane detection model
 lane_detector = UltrafastLaneDetector(model_path, model_type)

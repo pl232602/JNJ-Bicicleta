@@ -6,7 +6,8 @@ import numpy as np
 
 try:
     from tflite_runtime.interpreter import Interpreter
-except:
+    from tflite_runtime.interpreter import load_delegate
+except ImportError:
     from tensorflow.lite.python.interpreter import Interpreter
 
 lane_colors = [(0,0,255),(0,255,0),(255,0,0),(0,255,255)]
@@ -61,7 +62,8 @@ class UltrafastLaneDetector():
 
 	def initialize_model(self, model_path):
 
-		self.interpreter = Interpreter(model_path=model_path)
+		self.interpreter = Interpreter(model_path=model_path,experimental_delegates=[load_delegate('libedgetpu.so.1')])
+
 		self.interpreter.allocate_tensors()
 
 		# Get model info
@@ -160,10 +162,7 @@ class UltrafastLaneDetector():
 				lanes_detected.append(False)
 
 			lane_points_mat.append(lane_points)
-		#lane_mat_np = np.array(lane_points_mat)
-		#lane_detected_np = np.aray(lanes_detected)
-		#print(f"Shape of lane_points_mat: {lane_mat_np.shape}")
-		#print(f"Shape of lanes_detected: {lane_detected_np.shape}")
+		print([lane_points_mat])
 		return np.array(lane_points_mat), np.array(lanes_detected)
 
 	@staticmethod
