@@ -3,6 +3,8 @@ import cv2
 import scipy.special
 from enum import Enum
 import numpy as np
+from pycoral.utils import edgetpu
+
 
 try:
     from tflite_runtime.interpreter import Interpreter
@@ -62,7 +64,7 @@ class UltrafastLaneDetector():
 
 	def initialize_model(self, model_path):
 
-		self.interpreter = Interpreter(model_path=model_path,experimental_delegates=[load_delegate('libedgetpu.so.1')])
+		self.interpreter = edgetpu.make_interpreter(model_path)
 
 		self.interpreter.allocate_tensors()
 
