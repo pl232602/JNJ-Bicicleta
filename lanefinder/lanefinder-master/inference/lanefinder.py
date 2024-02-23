@@ -11,7 +11,7 @@ class Lanefinder:
         self._window = None
         self._interpreter = make_interpreter(model)
         self._interpreter.allocate_tensors()
-        self._cap = cv2.VideoCapture(0)
+        self._cap = cv2.VideoCapture("/home/nilesosa/Documents/JNJ-Bicicleta/30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4")
         self._size = input_shape
         self._output_shape = output_shape
         self._quant = quant

@@ -5,10 +5,10 @@ from inference import Lanefinder
 
 
 def read_config():
-    if not os.path.isfile('config.yaml'):
+    if not os.path.isfile('/home/nilesosa/Documents/JNJ-Bicicleta/lanefinder/lanefinder-master/config.yaml'):
         raise FileNotFoundError('Could not find config file')
 
-    with open('config.yaml', 'r') as file:
+    with open('/home/nilesosa/Documents/JNJ-Bicicleta/lanefinder/lanefinder-master/config.yaml', 'r') as file:
         config = yaml.safe_load(file)
 
     return config
