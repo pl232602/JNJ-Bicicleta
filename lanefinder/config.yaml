@@ -1,0 +1,13 @@
+model: /home/bicicleta/JNJ-Bicicleta/lanefinder/assets/models/nightlane_rev2_edgetpu.tflite
+quantization:
+  std: 0.003921568859368563
+  mean: 0
+dequantization:
+  std: 0.00390625
+  mean: 0
+input_shape:
+  - 192
+  - 192
+output_shape:
+  - 480
+  - 320
