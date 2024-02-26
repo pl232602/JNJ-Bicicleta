@@ -155,12 +155,12 @@ for frame, edge in main():
             if right_lock == True:
                 if turned_right == True:
                     print("compensating left")
-                    motor.left(60)
+                    motor.left(65)
                     turned_right = False
                 
                 if turned_left == False:
                     print("left turn motor call")
-                    motor.left(60)
+                    motor.left(65)
                     turned_left = True
 
 

@@ -14,8 +14,8 @@ GPIO.setup(clock, GPIO.OUT)
 pwm = GPIO.PWM(clock, 1000)
 ##pwm.start(25)
 
-vibrate_input_1 = 17
-vibrate_input_2 = 27
+vibrate_input_1 = 0
+vibrate_input_2 = 5
 vibrate_clock = 22
 
 
@@ -27,14 +27,14 @@ def left(speed):
     pwm.start(speed)
     GPIO.output(input_1,GPIO.LOW)
     GPIO.output(input_2,GPIO.HIGH)
-    time.sleep(0.4)
+    time.sleep(0.25)
     pwm.ChangeDutyCycle(0)
 
 def right(speed):
     pwm.start(speed)
     GPIO.output(input_1,GPIO.HIGH)
     GPIO.output(input_2,GPIO.LOW)
-    time.sleep(0.4)
+    time.sleep(0.25)
     pwm.ChangeDutyCycle(0)
 
 def vibrate():
