@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import motor_test as motor
+import motor as motor
 from lanefinder.main import main
 
 cap = cv2.VideoCapture(r'/home/nilesosa/Documents/JNJ-Bicicleta/30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4')
