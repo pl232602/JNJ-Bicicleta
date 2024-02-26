@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import motor_test as motor
+from lanefinder.main import main
 
 cap = cv2.VideoCapture(r'/home/nilesosa/Documents/JNJ-Bicicleta/30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4')
 
@@ -31,9 +32,8 @@ delay = 10
 
 x=0
 
-while True:
-    ret, frame = cap.read()
-    if ret == True:
+for frame, edge in main():
+    if True:
         slope_left = 0
         slope_right = 0
         x1s = []
@@ -56,10 +56,7 @@ while True:
 
 
         mask = cv2.inRange(frame, lower_white, upper_white)
-        mask = denoiser(mask)
-
-        edges = cv2.Canny(mask, 50, 150, apertureSize=3)
-        lines = cv2.HoughLines(edges, 1, np.pi/180, 70)
+        lines = cv2.HoughLines(edge, 1, np.pi/180, 40)
 
         try:
 
@@ -171,7 +168,7 @@ while True:
             pass
 
         try:
-            cv2.imshow('Frame', edges)
+            cv2.imshow('Frame', frame)
         except:
             pass
         x = x+1
