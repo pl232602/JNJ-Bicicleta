@@ -144,23 +144,27 @@ for frame, edge in main():
             if left_lock == True:
                 if turned_left == True:
                     print("compensating right")
-                    motor.right(60)
+                    motor.vibrate_right()
+                    motor.right(70)
                     turned_left = False
-                    
+
                 if turned_right == False:
                     print("right turn motor call")
+                    motor.vibrate_right()
                     motor.right(60)
                     turned_right = True
 
             if right_lock == True:
                 if turned_right == True:
                     print("compensating left")
-                    motor.left(65)
+                    motor.vibrate_left()
+                    motor.left(73)
                     turned_right = False
-                
+
                 if turned_left == False:
                     print("left turn motor call")
-                    motor.left(65)
+                    motor.vibrate_left()
+                    motor.left(60)
                     turned_left = True
 
 
@@ -168,6 +172,8 @@ for frame, edge in main():
             pass
 
         try:
+            cv2.namedWindow('Frame', cv2.WND_PROP_FULLSCREEN)
+            cv2.setWindowProperty("Frame", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
             cv2.imshow('Frame', frame)
         except:
             pass

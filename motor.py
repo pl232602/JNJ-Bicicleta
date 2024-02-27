@@ -20,40 +20,62 @@ vibrate_input_2 = 6
 vibrate_input_3 = 17
 vibrate_input_4 = 27
 
-vibrate_clock = 22
-
+vibrate_left_clock = 13
+vibrate_right_clock = 22
 
 GPIO.setup(vibrate_input_1, GPIO.OUT)
 GPIO.setup(vibrate_input_2, GPIO.OUT)
-GPIO.setup(vibrate_clock, GPIO.OUT)
-pwm_vibrate = GPIO.PWM(vibrate_clock,1000)
+GPIO.setup(vibrate_input_3, GPIO.OUT)
+GPIO.setup(vibrate_input_4, GPIO.OUT)
+GPIO.setup(vibrate_left_clock, GPIO.OUT)
+GPIO.setup(vibrate_right_clock, GPIO.OUT)
+pwm_vibrate_left = GPIO.PWM(vibrate_left_clock,1000)
+pwm_vibrate_right = GPIO.PWM(vibrate_right_clock,1000)
+
 def left(speed):
     pwm.start(speed)
     GPIO.output(input_1,GPIO.LOW)
     GPIO.output(input_2,GPIO.HIGH)
-    time.sleep(0.25)
+    time.sleep(0.35)
     pwm.ChangeDutyCycle(0)
 
 def right(speed):
     pwm.start(speed)
     GPIO.output(input_1,GPIO.HIGH)
     GPIO.output(input_2,GPIO.LOW)
-    time.sleep(0.25)
+    time.sleep(0.35)
     pwm.ChangeDutyCycle(0)
 
 def vibrate_left():
-   pwm_vibrate.start(100)
-   GPIO.output(vibrate_input_1, GPIO.HIGH)
-   GPIO.output(vibrate_input_2, GPIO.LOW)
-   time.sleep(5)
-   pwm_vibrate.ChangeDutyCycle(0)
-
-def vibrate_right():
-    pwm_vibrate.start(100)
+    pwm_vibrate_left.start(100)
     GPIO.output(vibrate_input_3, GPIO.HIGH)
     GPIO.output(vibrate_input_4, GPIO.LOW)
-    time.sleep(5)
-    pwm_vibrate.ChangeDutyCycle(0)
+    time.sleep(0.1)
+    pwm_vibrate_left.ChangeDutyCycle(0)
+    x=0
+    while x < 4:
+        time.sleep(0.1)
+        pwm_vibrate_left.ChangeDutyCycle(100)
+        time.sleep(0.1)
+        pwm_vibrate_left.ChangeDutyCycle(0)
+        x = x + 1
+
+def vibrate_right():
+    pwm_vibrate_right.start(100)
+    GPIO.output(vibrate_input_1, GPIO.HIGH)
+    GPIO.output(vibrate_input_2, GPIO.LOW)
+    time.sleep(0.1)
+    pwm_vibrate_right.ChangeDutyCycle(0)
+    x=0
+    while x < 4:
+        time.sleep(0.1)
+        pwm_vibrate_right.ChangeDutyCycle(100)
+        time.sleep(0.1)
+        pwm_vibrate_right.ChangeDutyCycle(0)
+        x = x + 1
 
 if __name__ == "__main__":
-    vibrate()
+    vibrate_right()
+    vibrate_left()
+    left(60)
+    right(60)
