@@ -75,7 +75,5 @@ def vibrate_right():
         x = x + 1
 
 if __name__ == "__main__":
-    vibrate_right()
-    vibrate_left()
-    left(60)
-    right(60)
+    left(80)
+    right(80)
