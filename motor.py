@@ -4,8 +4,8 @@ import time
 
 GPIO.setmode(GPIO.BCM)
 
-input_1 = 23
-input_2 = 24
+input_1 = 19
+input_2 = 26
 clock = 25
 
 GPIO.setup(input_1, GPIO.OUT)
@@ -34,15 +34,15 @@ pwm_vibrate_right = GPIO.PWM(vibrate_right_clock,1000)
 
 def left(speed):
     pwm.start(speed)
-    GPIO.output(input_1,GPIO.LOW)
-    GPIO.output(input_2,GPIO.HIGH)
+    GPIO.output(input_1,GPIO.HIGH)
+    GPIO.output(input_2,GPIO.LOW)
     time.sleep(0.35)
     pwm.ChangeDutyCycle(0)
 
 def right(speed):
     pwm.start(speed)
-    GPIO.output(input_1,GPIO.HIGH)
-    GPIO.output(input_2,GPIO.LOW)
+    GPIO.output(input_1,GPIO.LOW)
+    GPIO.output(input_2,GPIO.HIGH)
     time.sleep(0.35)
     pwm.ChangeDutyCycle(0)
 
@@ -75,5 +75,5 @@ def vibrate_right():
         x = x + 1
 
 if __name__ == "__main__":
-    left(80)
-    right(80)
+    right(60)
+    left(60)
