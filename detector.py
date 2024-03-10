@@ -1,9 +1,21 @@
 import cv2
 import numpy as np
 import motor as motor
+from encoder import encoder
 from lanefinder.main import main
+from multiprocessing import Process, Value, Manager
+from simple_pid import PID
+
+kp = 1
+ki = 1
+kd = 1
+
+pid_motor = PID(kp,ki,kd,setpoint = 0)
+
 
 cap = cv2.VideoCapture(r'/home/nilesosa/Documents/JNJ-Bicicleta/30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4')
+
+encoder_value = [0]
 
 def avg(input_list):
     try:
@@ -19,6 +31,7 @@ def denoiser(image):
     except:
         pass
 
+encoder_process = Process(target = encoder, args = (encoder_value,))
 
 left_counter = 0
 left_lock = False
