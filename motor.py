@@ -1,5 +1,9 @@
-import RPi.GPIO as GPIO
+from encoder import encoder
+from multiprocessing import Process, Value, Manager
+import threading as th
 import time
+import RPi.GPIO as GPIO
+from simple_pid import PID
 
 
 GPIO.setmode(GPIO.BCM)
@@ -32,19 +36,46 @@ GPIO.setup(vibrate_right_clock, GPIO.OUT)
 pwm_vibrate_left = GPIO.PWM(vibrate_left_clock,1000)
 pwm_vibrate_right = GPIO.PWM(vibrate_right_clock,1000)
 
+manager = Manager()
+
+global encoder_values
+
+encoder_values = manager.list([0])
+encoder_process = Process(target = encoder, args=(encoder_values,))
+encoder_process.start()
+
 def left(speed):
-    pwm.start(speed)
-    GPIO.output(input_1,GPIO.HIGH)
-    GPIO.output(input_2,GPIO.LOW)
-    time.sleep(0.35)
-    pwm.ChangeDutyCycle(0)
+    direction = "left"
+    motorp = th.Thread(target = motor_controller, args = (direction,))
+    motorp.start()
 
 def right(speed):
+    direction = "right"
+    motorp = th.Thread(target = motor_controller, args = (direction,))
+    motorp.start()
+
+def motor_controller(direction):
+    kp = 1
+    ki = 1
+    kd = 1
+    motor_pid = PID(kp,ki,kd,setpoint = 0)
+    motor_pid.output_limits = (-1000,1000)
+    if direction == "right":
+        change_value = -25
+    elif direction == "left":
+        change_value = 25
+    while True:
+                
+
+def motor_left(speed):
     pwm.start(speed)
-    GPIO.output(input_1,GPIO.LOW)
-    GPIO.output(input_2,GPIO.HIGH)
-    time.sleep(0.35)
-    pwm.ChangeDutyCycle(0)
+    GPIO.output(input_1, GPIO.HIGH)
+    GPIO.output(input_2, GPIO.LOW)
+
+def motor_right(speed):
+    pwm.start(speed)
+    GPIO.output(input_1, GPIO.HIGH)
+    GPIO.output(input_2,GPIO.LOW)
 
 def vibrate_left():
     pwm_vibrate_left.start(100)
@@ -75,5 +106,5 @@ def vibrate_right():
         x = x + 1
 
 if __name__ == "__main__":
-    right(60)
-    left(60)
+    while True:
+        print(encoder_values)
