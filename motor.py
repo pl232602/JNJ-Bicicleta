@@ -44,20 +44,22 @@ encoder_values = manager.list([0])
 encoder_process = Process(target = encoder, args=(encoder_values,))
 encoder_process.start()
 
-def left(speed):
+time.sleep(1)
+
+def left():
     direction = "left"
     motorp = th.Thread(target = motor_controller, args = (direction,))
     motorp.start()
 
-def right(speed):
+def right():
     direction = "right"
     motorp = th.Thread(target = motor_controller, args = (direction,))
     motorp.start()
 
 def motor_controller(direction):
-    kp = 1
-    ki = 1
-    kd = 5
+    kp = 4.0
+    ki = 2.6
+    kd = 1.3
     motor_pid = PID(kp,ki,kd,setpoint = 0)
     motor_pid.output_limits = (-290,290)
     if direction == "right":
@@ -65,7 +67,7 @@ def motor_controller(direction):
     elif direction == "left":
         change_value = 40
     motor_pid.setpoint = change_value
-    while True:
+    while abs(encoder_values[0]) < 40:
         pid_output = motor_pid(encoder_values[0])/3
         print(pid_output,encoder_values[0])
         speed = int(pid_output)
@@ -76,9 +78,9 @@ def motor_controller(direction):
                 motor_right(speed*-1)
         elif direction == "right":
             if speed > 0:
-                motor_right(speed*-1)
-            elif speed <= 0:
                 motor_left(speed)
+            elif speed <= 0:
+                motor_right(speed*-1)
 def motor_left(speed):
     pwm.start(speed)
     GPIO.output(input_1, GPIO.HIGH)
@@ -86,8 +88,8 @@ def motor_left(speed):
 
 def motor_right(speed):
     pwm.start(speed)
-    GPIO.output(input_1, GPIO.HIGH)
-    GPIO.output(input_2,GPIO.LOW)
+    GPIO.output(input_1, GPIO.LOW)
+    GPIO.output(input_2,GPIO.HIGH)
 
 def vibrate_left():
     pwm_vibrate_left.start(100)
@@ -118,5 +120,4 @@ def vibrate_right():
         x = x + 1
 
 if __name__ == "__main__":
-    while True:
-        motor_controller("left")
+    left()
