@@ -2,7 +2,7 @@ import serial
 import time
 import re
 
-ser = serial.Serial('/dev/ttyACM1',9600)
+ser = serial.Serial('/dev/ttyACM0',9600)
 
 def encoder(encoder_list):
     global broke_down

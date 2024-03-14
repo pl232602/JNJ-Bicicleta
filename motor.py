@@ -65,8 +65,7 @@ def motor_controller(direction):
     elif direction == "left":
         change_value = 25
     while True:
-                
-
+        pass
 def motor_left(speed):
     pwm.start(speed)
     GPIO.output(input_1, GPIO.HIGH)
@@ -106,5 +105,5 @@ def vibrate_right():
         x = x + 1
 
 if __name__ == "__main__":
-    while True:
-        print(encoder_values)
+    vibrate_left()
+    vibrate_right()
