@@ -57,26 +57,26 @@ def right(speed):
 def motor_controller(direction):
     kp = 1
     ki = 1
-    kd = 1
+    kd = 5
     motor_pid = PID(kp,ki,kd,setpoint = 0)
-    motor_pid.output_limits = (-1000,1000)
+    motor_pid.output_limits = (-290,290)
     if direction == "right":
-        change_value = -25
+        change_value = -40
     elif direction == "left":
-        change_value = 25
-    motor_pid.setpoit = change_value
+        change_value = 40
+    motor_pid.setpoint = change_value
     while True:
-        pid_output = motor_pid(encoder_values[0])/10
-        print(pid_output)
+        pid_output = motor_pid(encoder_values[0])/3
+        print(pid_output,encoder_values[0])
         speed = int(pid_output)
         if direction == "left":
             if speed > 0:
                 motor_left(speed)
             elif speed <= 0:
-                motor_right(speed)
+                motor_right(speed*-1)
         elif direction == "right":
             if speed > 0:
-                motor_right(speed)
+                motor_right(speed*-1)
             elif speed <= 0:
                 motor_left(speed)
 def motor_left(speed):
@@ -118,5 +118,5 @@ def vibrate_right():
         x = x + 1
 
 if __name__ == "__main__":
-    vibrate_left()
-    vibrate_right()
+    while True:
+        motor_controller("left")
