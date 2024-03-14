@@ -66,8 +66,19 @@ def motor_controller(direction):
         change_value = 25
     motor_pid.setpoit = change_value
     while True:
-        pid_output = motor_pid(encoder_values[0])
+        pid_output = motor_pid(encoder_values[0])/10
         print(pid_output)
+        speed = int(pid_output)
+        if direction == "left":
+            if speed > 0:
+                motor_left(speed)
+            elif speed <= 0:
+                motor_right(speed)
+        elif direction == "right":
+            if speed > 0:
+                motor_right(speed)
+            elif speed <= 0:
+                motor_left(speed)
 def motor_left(speed):
     pwm.start(speed)
     GPIO.output(input_1, GPIO.HIGH)
