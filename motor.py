@@ -65,9 +65,9 @@ def right():
 def motor_controller(direction):
     init_value = encoder_values[0]
     print("motor controller called")
-    kp = 5
-    ki = 2.6
-    kd = 1.3
+    kp = 4
+    ki = 3.4
+    kd = 2
     motor_pid = PID(kp,ki,kd,setpoint = init_value)
     motor_pid.output_limits = (-290,290)
     if direction == "right":
@@ -89,6 +89,7 @@ def motor_controller(direction):
                 motor_left(speed)
             elif speed <= 0:
                 motor_right(speed*-1)
+    pwm.ChangeDutyCycle(0)
 def motor_left(speed):
     pwm.start(speed)
     GPIO.output(input_1, GPIO.HIGH)
