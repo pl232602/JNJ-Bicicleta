@@ -52,6 +52,7 @@ def left():
     direction = "left"
     motorp = th.Thread(target = motor_controller, args = (direction,))
     motorp.start()
+    motorp.join()
 
 def right():
     print("right_called")
@@ -59,19 +60,22 @@ def right():
     direction = "right"
     motorp = th.Thread(target = motor_controller, args = (direction,))
     motorp.start()
+    motorp.join()
 
 def motor_controller(direction):
+    init_value = encoder_values[0]
+    print("motor controller called")
     kp = 5
     ki = 2.6
     kd = 1.3
-    motor_pid = PID(kp,ki,kd,setpoint = 0)
+    motor_pid = PID(kp,ki,kd,setpoint = init_value)
     motor_pid.output_limits = (-290,290)
     if direction == "right":
         change_value = -40
     elif direction == "left":
         change_value = 40
-    motor_pid.setpoint = change_value
-    while abs(encoder_values[0]) < 40:
+    motor_pid.setpoint = change_value+init_value
+    while abs(encoder_values[0]-init_value) < 40:
         pid_output = motor_pid(encoder_values[0])/3
         print(pid_output,encoder_values[0])
         speed = int(pid_output)
@@ -124,5 +128,6 @@ def vibrate_right():
         x = x + 1
 
 if __name__ == "__main__":
-    right()
     left()
+    time.sleep(2)
+    right()

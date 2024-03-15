@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import motor as motor
+import test_otor as motor
 from encoder import encoder
 from lanefinder.main import main
 from multiprocessing import Process, Value, Manager
