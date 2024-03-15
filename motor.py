@@ -17,7 +17,6 @@ GPIO.setup(input_2, GPIO.OUT)
 GPIO.setup(clock, GPIO.OUT)
 pwm = GPIO.PWM(clock, 1000)
 ##pwm.start(25)
-
 vibrate_input_1 = 5
 vibrate_input_2 = 6
 
@@ -39,25 +38,30 @@ pwm_vibrate_right = GPIO.PWM(vibrate_right_clock,1000)
 manager = Manager()
 
 global encoder_values
+global motorp
 
 encoder_values = manager.list([0])
 encoder_process = Process(target = encoder, args=(encoder_values,))
 encoder_process.start()
 
-time.sleep(1)
+time.sleep(2)
 
 def left():
+    print("left_called")
+    global motorp
     direction = "left"
     motorp = th.Thread(target = motor_controller, args = (direction,))
     motorp.start()
 
 def right():
+    print("right_called")
+    global motorp
     direction = "right"
     motorp = th.Thread(target = motor_controller, args = (direction,))
     motorp.start()
 
 def motor_controller(direction):
-    kp = 4.0
+    kp = 5
     ki = 2.6
     kd = 1.3
     motor_pid = PID(kp,ki,kd,setpoint = 0)
@@ -120,4 +124,5 @@ def vibrate_right():
         x = x + 1
 
 if __name__ == "__main__":
+    right()
     left()
