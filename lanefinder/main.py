@@ -3,9 +3,9 @@ import cv2
 import yaml
 from lanefinder.inference.lanefinder import Lanefinder
 
-config_path = "/home/bicicleta/JNJ-Bicicleta/lanefinder/config.yaml"
-model_path = "/home/bicicleta/JNJ-Bicicleta/lanefinder/assets/models/nightlane_rev2_edgetpu.tflite"
-video_path = "/home/bicicleta/JNJ-Bicicleta/30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4"
+config_path = "/home/nilesosa/Documents/JNJ-Bicicleta/lanefinder/config.yaml"
+model_path = "/home/nilesosa/Documents/JNJ-Bicicleta/lanefinder/assets/models/nightlane_rev2_edgetpu.tflite"
+video_path = "/home/nilesosa/Documents/JNJ-Bicicleta/30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4"
 
 def read_config():
     if not os.path.isfile(config_path):

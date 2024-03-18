@@ -1,8 +1,8 @@
-from encoder import encoder
+from fakeEncoder import encoder
 from multiprocessing import Process, Value, Manager
 import threading as th
 import time
-import RPi.GPIO as GPIO
+import fakeRPi.GPIO as GPIO
 from simple_pid import PID
 
 
@@ -77,7 +77,7 @@ def motor_controller(direction):
     motor_pid.setpoint = change_value+init_value
     while abs(encoder_values[0]-init_value) < 40:
         pid_output = motor_pid(encoder_values[0])/3
-        print(pid_output,encoder_values[0])
+        print("difference: " + str(abs(encoder_values[0]-init_value)) + " encoder_value: " + str(encoder_values[0]), end='\r')
         speed = int(pid_output)
         if direction == "left":
             if speed > 0:

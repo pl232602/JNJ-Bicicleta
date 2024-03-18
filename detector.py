@@ -1,21 +1,10 @@
 import cv2
 import numpy as np
-import test_motor as motor
-from encoder import encoder
+import motor
 from lanefinder.main import main
 from multiprocessing import Process, Value, Manager
 from simple_pid import PID
 
-kp = 1
-ki = 1
-kd = 1
-
-pid_motor = PID(kp,ki,kd,setpoint = 0)
-
-
-cap = cv2.VideoCapture(r'/home/nilesosa/Documents/JNJ-Bicicleta/30 minute Fat Burning Indoor Cycling Workout Alps South Tyrol Lake Tour Garmin 4K Video.mp4')
-
-encoder_value = [0]
 
 def avg(input_list):
     try:
@@ -30,8 +19,6 @@ def denoiser(image):
         return eroded
     except:
         pass
-
-encoder_process = Process(target = encoder, args = (encoder_value,))
 
 left_counter = 0
 left_lock = False
@@ -137,9 +124,9 @@ for frame, edge in main():
             right_distance = abs(w/2 - new_arx2s)
 
 
-            if left_distance>right_distance:
+            if left_distance> 100+right_distance:
                 left_counter = left_counter + 1
-            elif right_distance>left_distance:
+            elif right_distance>100+left_distance:
                 right_counter = right_counter + 1
 
             if left_counter > right_counter + delay:
@@ -158,26 +145,26 @@ for frame, edge in main():
                 if turned_left == True:
                     print("compensating right")
                     motor.vibrate_right()
-                    motor.right(70)
+                    motor.right()
                     turned_left = False
 
                 if turned_right == False:
                     print("right turn motor call")
                     motor.vibrate_right()
-                    motor.right(60)
+                    motor.right()
                     turned_right = True
 
             if right_lock == True:
                 if turned_right == True:
                     print("compensating left")
                     motor.vibrate_left()
-                    motor.left(73)
+                    motor.left()
                     turned_right = False
 
                 if turned_left == False:
                     print("left turn motor call")
                     motor.vibrate_left()
-                    motor.left(60)
+                    motor.left()
                     turned_left = True
 
 
@@ -186,7 +173,7 @@ for frame, edge in main():
 
         try:
             cv2.namedWindow('Frame', cv2.WND_PROP_FULLSCREEN)
-            cv2.setWindowProperty("Frame", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+            ##cv2.setWindowProperty("Frame", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
             cv2.imshow('Frame', frame)
         except:
             pass
@@ -196,7 +183,5 @@ for frame, edge in main():
 
     else:
         break
-
-cap.release()
 
 cv2.destroyAllWindows()
