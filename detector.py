@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import motor
+import time
 from lanefinder.main import main
 from multiprocessing import Process, Value, Manager
 from simple_pid import PID
@@ -143,28 +144,32 @@ for frame, edge in main():
 
             if left_lock == True:
                 if turned_left == True:
-                    print("compensating right")
-                    motor.vibrate_right()
-                    motor.right()
+                    #print("compensating right")
+                    #motor.vibrate_right()
+                    #motor.right()
                     turned_left = False
 
                 if turned_right == False:
                     print("right turn motor call")
                     motor.vibrate_right()
                     motor.right()
+                    time.sleep(1)
+                    motor.left()
                     turned_right = True
 
             if right_lock == True:
                 if turned_right == True:
-                    print("compensating left")
-                    motor.vibrate_left()
-                    motor.left()
+                    #print("compensating left")
+                    #motor.vibrate_left()
+                    #motor.left()
                     turned_right = False
 
                 if turned_left == False:
                     print("left turn motor call")
                     motor.vibrate_left()
                     motor.left()
+                    time.sleep(1)
+                    motor.right()
                     turned_left = True
 
 

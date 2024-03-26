@@ -1,8 +1,9 @@
-from fakeEncoder import encoder
+from encoder import encoder
 from multiprocessing import Process, Value, Manager
 import threading as th
 import time
-import fakeRPi.GPIO as GPIO
+#import fakeRPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 from simple_pid import PID
 
 
